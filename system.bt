@@ -1,0 +1,559 @@
+//------------------------------------------------
+//--- 010 Editor v12.0.1 Binary Template
+//
+//      File: FE8Data.bin
+//   Authors: aburn
+//   Version: 1.00
+//   Purpose: 
+//   History: 
+//   Version:   Date:       Author: Comment:
+//   1.00       2024-04-03  aburn   start
+//------------------------------------------------
+BigEndian();
+struct FILE {
+  struct HEADER {
+    // 0x0 ~ 0x3:  Length of the entire file
+    // 0x4 ~ 0x7:  The offset to the table of string pointers
+    // 0x8 ~ 0xB:  The number of pointers that exist in the table
+    // 0xC ~ 0xF:  The number of data sections that exist
+    // 0x10 ~ 0x1F: 00s as far as I can tell
+    string pack;
+    byte b1;
+    byte b2;
+    byte b3;
+    local int j;
+    for( j = 0; j < 16; j++ ) {
+        uint packOffset <comment=ReadLine(this)>;
+        uint fileNameOffset <comment=ReadLine(this)>;
+        uint fileOffset;
+        uint fileLength;
+    }
+    for( j = 0; j < 16; j++ ) {
+      struct LoadFile {
+        string file;
+      } loadfile<name="Load Files">;
+    }
+    byte Padding1[0x1E];
+    uint lengthOfFile;
+    uint pointerTableOffset;
+    uint numberOfPointers;
+    uint numberOfSections;
+    byte Padding2[0x10];
+    local uint sectionTableOffset = pointerTableOffset + (4 * numberOfPointers) + 0x240;
+    local uint sectionNameTableOffset = sectionTableOffset + (numberOfSections * 8);
+  } header<name = "Header", fgcolor = cLtBlue>;
+    Printf("sectionTableOffset = %u\n", header.sectionTableOffset);
+    Printf("sectionNameTableOffset = %u\n", header.sectionNameTableOffset);
+
+  FSeek(header.sectionTableOffset);
+  struct SectionData {
+    local int i;
+    for( i = 0; i < header.numberOfSections; i++ ) {
+      struct SectionTable{
+        uint sectionTableOffset;
+        uint sectionTableNameOffset;
+        local uint pos = FTell();
+        if( i == 0 ) {
+            FSeek(sectionTableOffset + 0x240);
+            struct BattleSkyData{
+                uint u1;
+                uint u2 <comment=ReadLine(this + 0x240)>;
+                uint u3 <comment=ReadLine(this + 0x240)>;
+                uint u4 <comment=ReadLine(this + 0x240)>;
+                uint u5 <comment=ReadLine(this + 0x240)>;
+                uint u6 <comment=ReadLine(this + 0x240)>;
+                uint u7 <comment=ReadLine(this + 0x240)>;
+                uint u8 <comment=ReadLine(this + 0x240)>;
+                uint u9 <comment=ReadLine(this + 0x240)>;
+                uint u10 <comment=ReadLine(this + 0x240)>;
+                uint u11 <comment=ReadLine(this + 0x240)>;
+                uint u12 <comment=ReadLine(this + 0x240)>;
+                uint u13 <comment=ReadLine(this + 0x240)>;
+                uint u14 <comment=ReadLine(this + 0x240)>;
+                uint u15 <comment=ReadLine(this + 0x240)>;
+                uint u16 <comment=ReadLine(this + 0x240)>;
+                uint u17 <comment=ReadLine(this + 0x240)>;
+                uint u18 <comment=ReadLine(this + 0x240)>;
+                uint u19 <comment=ReadLine(this + 0x240)>;
+            } battleskydata <name="Battle Sky Data">;
+        }
+        FSeek(pos);
+        pos = FTell();
+        if( i == 1 ) {
+            FSeek(sectionTableOffset + 0x240);
+            struct BattleTerrainData{
+                uint u1;
+                uint u2 <comment=ReadLine(this + 0x240)>;
+                uint u3 <comment=ReadLine(this + 0x240)>;
+                uint u4 <comment=ReadLine(this + 0x240)>;
+                uint u5 <comment=ReadLine(this + 0x240)>;
+                uint u6 <comment=ReadLine(this + 0x240)>;
+                uint u7 <comment=ReadLine(this + 0x240)>;
+                uint u8 <comment=ReadLine(this + 0x240)>;
+                uint u9 <comment=ReadLine(this + 0x240)>;
+                uint u10 <comment=ReadLine(this + 0x240)>;
+                uint u11 <comment=ReadLine(this + 0x240)>;
+                uint u12 <comment=ReadLine(this + 0x240)>;
+                uint u13 <comment=ReadLine(this + 0x240)>;
+                uint u14 <comment=ReadLine(this + 0x240)>;
+                uint u15 <comment=ReadLine(this + 0x240)>;
+                uint u16 <comment=ReadLine(this + 0x240)>;
+                uint u17 <comment=ReadLine(this + 0x240)>;
+                uint u18 <comment=ReadLine(this + 0x240)>;
+                uint u19 <comment=ReadLine(this + 0x240)>;
+                uint u20 <comment=ReadLine(this + 0x240)>;
+                uint u21 <comment=ReadLine(this + 0x240)>;
+                uint u22 <comment=ReadLine(this + 0x240)>;
+                uint u23 <comment=ReadLine(this + 0x240)>;
+                uint u24 <comment=ReadLine(this + 0x240)>;
+                uint u25 <comment=ReadLine(this + 0x240)>;
+                uint u26 <comment=ReadLine(this + 0x240)>;
+                uint u27 <comment=ReadLine(this + 0x240)>;
+                uint u28 <comment=ReadLine(this + 0x240)>;
+                uint u29 <comment=ReadLine(this + 0x240)>;
+                uint u30 <comment=ReadLine(this + 0x240)>;
+                uint u31 <comment=ReadLine(this + 0x240)>;
+                uint u32 <comment=ReadLine(this + 0x240)>;
+                uint u33 <comment=ReadLine(this + 0x240)>;
+                uint u34 <comment=ReadLine(this + 0x240)>;
+                uint u35 <comment=ReadLine(this + 0x240)>;
+                uint u36 <comment=ReadLine(this + 0x240)>;
+                uint u37 <comment=ReadLine(this + 0x240)>;
+                uint u38 <comment=ReadLine(this + 0x240)>;
+                uint u39 <comment=ReadLine(this + 0x240)>;
+                uint u40 <comment=ReadLine(this + 0x240)>;
+                uint u41 <comment=ReadLine(this + 0x240)>;
+                uint u42 <comment=ReadLine(this + 0x240)>;
+                uint u43 <comment=ReadLine(this + 0x240)>;
+                uint u44 <comment=ReadLine(this + 0x240)>;
+                uint u45 <comment=ReadLine(this + 0x240)>;
+                uint u46 <comment=ReadLine(this + 0x240)>;
+                uint u47 <comment=ReadLine(this + 0x240)>;
+                uint u48 <comment=ReadLine(this + 0x240)>;
+                uint u49 <comment=ReadLine(this + 0x240)>;
+            } battleterraindata <name="Battle Terrain Data">;
+        }
+        FSeek(pos);
+        pos = FTell();
+        if( i == 2 ) {
+            FSeek(sectionTableOffset + 0x240);
+            struct ChapterData{
+                uint numberOfChapters;
+                uint u1;
+                local int j;
+                for ( j = 0; j < chapterdata.numberOfChapters; j++ ) {
+                    struct ChapterTable {
+                        uint chapterMapIDOffset <comment=ReadLine(this + 0x240)>;
+                        uint chapterIDOffset <comment=ReadLine(this + 0x240)>;
+                        uint u2;
+                        uint chapterMusicOffset <comment=ReadLine(this + 0x240)>;
+                        uint u3;
+                        uint u4;
+                        uint chapterOffset1 <comment=ReadLine(this + 0x240)>; //ML_??
+                        uint u5;
+                        uint u6;
+                        uint u7;
+                        uint u8;
+                        uint u9;
+                        uint u10;
+                        uint u11;
+                        uint u12;
+                        uint u13;
+                        uint chapterOffset2 <comment=ReadLine(this + 0x240)>; //RID_??
+                        uint chapterOffset3 <comment=ReadLine(this + 0x240)>; //begnion_room??
+                        uint u14;
+                        uint chapterOffset4 <comment=ReadLine(this + 0x240)>; //RID_??
+                        uint u15;
+                        uint u16;
+                        uint u17;
+                        uint chapterOffset5 <comment=ReadLine(this + 0x240)>; //MCT01
+                    } chaptertable <name="Chapter Table", read=ReadLine(chapterIDOffset + 0x240)>;
+                }
+            } chapterdata<name = "Chapter Data">;
+        }
+        FSeek(pos);
+        pos = FTell();
+        if( i == 3 ) {
+            FSeek(sectionTableOffset + 0x240);
+            struct DatabaseHead{
+                uint u1 <comment=ReadLine(this + 0x240)>;
+                uint u2 <comment=ReadLine(this + 0x240)>;
+                uint u3 <comment=ReadLine(this + 0x240)>;
+            } databasehead <name="Database Head">;
+        }
+        FSeek(pos);
+        pos = FTell();
+        if( i == 5 ) {
+            FSeek(sectionTableOffset + 0x240);
+            struct GameData{
+                uint u1;
+                uint u2;
+                uint u3;
+                uint u4;
+                uint u5;
+                uint u6;
+                uint u7;
+            } gamedata <name="Game Data">;
+        }
+        FSeek(pos);
+        pos = FTell();
+        if( i == 6 ) {
+            FSeek(sectionTableOffset + 0x240);
+            struct GroupData{
+                uint numberOfGroups;
+                local int j;
+                for ( j = 0; j < groupdata.numberOfGroups; j++ ) {
+                    struct GroupTable{
+                        uint unknownOffset <comment=ReadLine(this + 0x240)>;
+                    } grouptable <name="Group Table", read=ReadLine(unknownOffset + 0x240)>;
+                }
+            } groupdata <name="Group Data">;
+        }
+        FSeek(pos);
+        pos = FTell();
+        if( i == 7 ) {
+          FSeek(sectionTableOffset + 0x240);
+          struct ItemData{
+            uint numberOfItems;
+            local int j;
+            for ( j = 0; j < itemdata.numberOfItems; j++ ) {
+              struct ItemTable{
+                uint itemIDOffset <comment=ReadLine(this + 0x240)>;
+                uint itemNameOffset <comment=ReadLine(this + 0x240)>;
+                uint itemDescriptionOffset <comment=ReadLine(this + 0x240)>;
+                uint itemTypeOffset <comment=ReadLine(this + 0x240)>;
+                uint itemSubTypeOffset <comment=ReadLine(this + 0x240)>;
+                uint itemRankOffset <comment=ReadLine(this + 0x240)>;
+                uint itemTrait1Offset <comment=ReadLine(this + 0x240)>;
+                uint itemTrait2Offset <comment=ReadLine(this + 0x240)>;
+                uint itemTrait3Offset <comment=ReadLine(this + 0x240)>;
+                uint itemTrait4Offset <comment=ReadLine(this + 0x240)>;
+                uint itemTrait5Offset <comment=ReadLine(this + 0x240)>;
+                uint itemTrait6Offset <comment=ReadLine(this + 0x240)>;
+                uint itemEffectiveness1Offset <comment=ReadLine(this + 0x240)>;
+                uint itemEffectiveness2Offset <comment=ReadLine(this + 0x240)>;
+                uint itemAnimation1Offset <comment=ReadLine(this + 0x240)>;
+                uint itemAnimation2Offset <comment=ReadLine(this + 0x240)>;
+                ushort itemCost;
+                ubyte itemDurability;
+                ubyte itemMight;
+                ubyte itemAccuracy;
+                ubyte itemWeight;
+                ubyte itemCritical;
+                ubyte itemMinimumRange;
+                ubyte itemMaximumRange;
+                ubyte itemIconNumber;
+                ubyte itemWeaponExperience;
+                ubyte itemHPBonus;
+                ubyte itemStrengthBonus;
+                ubyte itemMagicBonus;
+                ubyte itemSkillBonus;
+                ubyte itemSpeedBonus;
+                ubyte itemLuckBonus;
+                ubyte itemDefenseBonus;
+                ubyte itemResistanceBonus;
+                ubyte itemMoveBonus;
+                ubyte itemConstitutionBonus;
+                ubyte itemHPGrowthBonus;
+                ubyte itemStrengthGrowthBonus;
+                ubyte itemMagicGrowthBonus;
+                ubyte itemSkillGrowthBonus;
+                ubyte itemSpeedGrowthBonus;
+                ubyte itemLuckGrowthBonus;
+                ubyte itemDefenseGrowthBonus;
+                ubyte itemResistanceGrowthBonus;
+                ubyte unknown1;
+                ubyte unknown2;
+                ubyte unknown3;
+              } itemtable <name="Item Table", read=ReadLine(itemIDOffset + 0x240)>;
+            }
+          } itemdata<name="Item Data", fgcolor = cPurple>;
+        }
+        FSeek(pos);
+        pos = FTell();
+        if( i == 8 ) {
+          FSeek(sectionTableOffset + 0x240);
+          //struct ItemTableHeader{
+          //  uint lengthOfFile;
+          //  uint pointerTableOffset;
+          //  uint numberOfPointers;
+          //  uint numberOfSections;
+          //  byte Padding[0x10];
+          //} itemtableheader<name="Item Table Header">;
+          struct JobData{
+            //Printf("ReadUInt(): %u\n", ReadUInt() + 0x240);
+            //Printf("ReadLine(ReadUInt()): %s\n", ReadLine(ReadUInt() + 0x240));
+            uint numberOfJobs;
+            local int j;
+            for ( j = 0; j < jobdata.numberOfJobs; j++ ) {
+              struct JobTable{
+                uint jobIDOffset <comment=ReadLine(this + 0x240)>;
+                uint jobNameOffset <comment=ReadLine(this + 0x240)>;
+                uint jobDescriptionOffset <comment=ReadLine(this + 0x240)>;
+                uint jobPromotionIDOffset <comment=ReadLine(this + 0x240)>;
+                uint jobDefaultWeaponIDOffset <comment=ReadLine(this + 0x240)>;
+                uint jobWeaponLevelOffset <comment=ReadLine(this + 0x240)>;
+                uint jobSkillIDOffset1 <comment=ReadLine(this + 0x240)>;
+                uint jobSkillIDOffset2 <comment=ReadLine(this + 0x240)>;
+                uint jobSkillIDOffset3 <comment=ReadLine(this + 0x240)>;
+                uint jobSkillIDOffset4 <comment=ReadLine(this + 0x240)>;
+                uint jobSkillIDOffset5 <comment=ReadLine(this + 0x240)>;
+                uint jobRaceIDOffset <comment=ReadLine(this + 0x240)>;
+                uint jobTypeOffset1 <comment=ReadLine(this + 0x240)>;
+                uint jobTypeOffset2 <comment=ReadLine(this + 0x240)>;
+                uint jobAnimationOffset <comment=ReadLine(this + 0x240)>;
+                byte jobBaseBuild;
+                byte jobBaseWeight;
+                byte jobBaseMove;
+                byte u4; // [0x3E]
+                byte jobBaseSkillCapacity;
+                byte u6; // [0x41]
+                byte u7; // [0x42]
+                byte u8; // [0x43]
+                byte jobBaseHP;
+                byte jobBaseStrength;
+                byte jobBaseMagic;
+                byte jobBaseSkill;
+                byte jobBaseSpeed;
+                byte jobBaseLuck;
+                byte jobBaseDefence;
+                byte jobBaseResistance;
+                byte jobMaxHP;
+                byte jobMaxStrength;
+                byte jobMaxMagic;
+                byte jobMaxSkill;
+                byte jobMaxSpeed;
+                byte jobMaxLuck;
+                byte jobMaxDefence;
+                byte jobMaxResistance;
+                byte jobHPGrowth;
+                byte jobStrengthGrowth;
+                byte jobMagicGrowth;
+                byte jobSkillGrowth;
+                byte jobSpeedGrowth;
+                byte jobLuckGrowth;
+                byte jobDefenceGrowth;
+                byte jobResistanceGrowth;
+                byte jobBaseHPGrowth;
+                byte jobBaseStrengthGrowth;
+                byte jobBaseMagicGrowth;
+                byte jobBaseSkillGrowth;
+                byte jobBaseSpeedGrowth;
+                byte jobBaseLuckGrowth;
+                byte jobBaseDefenceGrowth;
+                byte jobBaseResistanceGrowth;
+              } jobtable <name="Job Table", read=ReadLine(jobIDOffset + 0x240)>;
+            }
+          } jobdata<name="Job Data", fgcolor = cGreen>;
+        }
+        FSeek(pos);
+        pos = FTell();
+        if ( i == 10 ) {
+            FSeek(sectionTableOffset + 0x240);
+            
+            struct PersonData{
+                uint numberOfPersons;
+                local int j;
+                for ( j = 0; j < persondata.numberOfPersons; j++ ) {
+                    struct PersonTable {
+                        uint personIDOffset <comment=ReadLine(this + 0x240)>;
+                        uint personNameOffset <comment=ReadLine(this + 0x240)>;
+                        uint u1;
+                        uint personPortraitIDOffset <comment=ReadLine(this + 0x240)>;
+                        uint personJobIDOffset <comment=ReadLine(this + 0x240)>;
+                        uint personAffinityIDOffset <comment=ReadLine(this + 0x240)>;
+                        uint personInnateWeaponLevelOffset <comment=ReadLine(this + 0x240)>;
+                        uint personSkillID1Offset <comment=ReadLine(this + 0x240)>;
+                        uint personSkillID2Offset <comment=ReadLine(this + 0x240)>;
+                        uint personSkillID3Offset <comment=ReadLine(this + 0x240)>;
+                        uint personBaseModelOffset <comment=ReadLine(this + 0x240)>;
+                        uint personPromotedModelOffset <comment=ReadLine(this + 0x240)>;
+                        byte b1;
+                        byte b2;
+                        byte b3;
+                        byte personBaseBiorhythm;
+                        byte personBaseLaguzGauge;
+                        byte b6; //Everyone: 30? Skill capacity?
+                        byte personBaseLevel;
+                        byte personBaseWeight;
+                        byte personBaseMove;
+                        byte personBaseHP;
+                        byte personBaseStrength;
+                        byte personBaseMagic;
+                        byte personBaseSkill;
+                        byte personBaseSpeed;
+                        byte personBaseLuck;
+                        byte personBaseDefence;
+                        byte personBaseResistance;
+                        byte personHPGrowth;
+                        byte personStrengthGrowth;
+                        byte personMagicGrowth;
+                        byte personSkillGrowth;
+                        byte personSpeedGrowth;
+                        byte personLuckGrowth;
+                        byte personDefenceGrowth;
+                        byte personResistanceGrowth;
+                        byte personBaseHPGrowth;
+                        byte personBaseStrengthGrowth;
+                        byte personBaseMagicGrowth;
+                        byte personBaseSkillGrowth;
+                        byte personBaseSpeedGrowth;
+                        byte personBaseLuckGrowth;
+                        byte personBaseDefenceGrowth;
+                        byte personBaseResistanceGrowth;
+                        byte b34;
+                        byte b35;
+                        byte b36;
+                    } persontable <name="Person Table", read=ReadLine(personIDOffset + 0x240)>;
+                }
+            } persondata<name="Person Data", bgcolor = cBlue>;
+        }
+        FSeek(pos);
+        pos = FTell();
+        if( i == 11 ) {
+            FSeek(sectionTableOffset + 0x240);
+            struct RelianceData{
+                uint u1;
+                uint u2 <comment=ReadLine(this + 0x240)>;
+                uint u3 <comment=ReadLine(this + 0x240)>;
+                uint u4 <comment=ReadLine(this + 0x240)>;
+                uint u5 <comment=ReadLine(this + 0x240)>;
+                uint u6 <comment=ReadLine(this + 0x240)>;
+                uint u7 <comment=ReadLine(this + 0x240)>;
+                uint u8 <comment=ReadLine(this + 0x240)>;
+                uint u9 <comment=ReadLine(this + 0x240)>;
+                uint u10 <comment=ReadLine(this + 0x240)>;
+                uint u11 <comment=ReadLine(this + 0x240)>;
+                uint u12 <comment=ReadLine(this + 0x240)>;
+                uint u13 <comment=ReadLine(this + 0x240)>;
+                uint u14 <comment=ReadLine(this + 0x240)>;
+                uint u15 <comment=ReadLine(this + 0x240)>;
+                uint u16 <comment=ReadLine(this + 0x240)>;
+                uint u17 <comment=ReadLine(this + 0x240)>;
+                uint u18 <comment=ReadLine(this + 0x240)>;
+                uint u19 <comment=ReadLine(this + 0x240)>;
+            } reliancedata <name="Reliance Data", bgcolor = cBlue>;
+        }
+        FSeek(pos);
+        pos = FTell();
+        if( i == 110 ) {
+            FSeek(sectionTableOffset + 0x240);
+            struct SkillData{
+                uint numberOfSkills;
+                local int j;
+                for ( j = 0; j < skilldata.numberOfSkills; j++ ) {
+                    struct SkillTable{
+                        uint skillIDOffset <comment=ReadLine(this + 0x240)>;
+                        uint skillNameOffset <comment=ReadLine(this + 0x240)>;
+                        uint skillDescriptionOffset <comment=ReadLine(this + 0x240)>;
+                        uint skillHelpMessageOffset1 <comment=ReadLine(this + 0x240)>;
+                        uint skillHelpMessageOffset2 <comment=ReadLine(this + 0x240)>;
+                        uint skillEffectID <comment=ReadLine(this + 0x240)>;
+                        byte skillNumber;
+                        byte b2; // SID[60]_STEAL:35; SID[69]_TACKLE2:17; SID[72]_REINFORCEMENTS:36
+                        byte skillCost;
+                        byte b4; // SID[69]_TACKLE2:1; SID[72]_REINFORCEMENTS:1
+                        byte skillRestrictionCount;
+                        byte b6;
+                        byte b7;
+                        byte b8;
+                        uint skillItemIDOffset <comment=ReadLine(ReadUInt(this + 0x240) + 0x240)>;
+                        uint skillRestrictionOffset <comment=ReadLine(ReadUInt(this + 0x240) + 0x240)>;
+                    } skilltable <name="Skill Table", read=ReadLine(skillIDOffset + 0x240)>;
+                } 
+            } skilldata <name="Skill Data", bgcolor = cGreen>;
+        }
+        FSeek(pos);
+        pos = FTell();
+        if( i == 111 ) {
+            FSeek(sectionTableOffset + 0x240);
+            struct TerrainData{
+                uint u1;
+                
+                uint u2 <comment=ReadLine(this + 0x240)>;
+                uint u3 <comment=ReadLine(this + 0x240)>;
+                uint u4 <comment=ReadLine(this + 0x240)>;
+                uint u5 <comment=ReadLine(this + 0x240)>;
+                uint u6 <comment=ReadLine(this + 0x240)>;
+                uint u7 <comment=ReadLine(this + 0x240)>;
+                uint u8 <comment=ReadLine(this + 0x240)>;
+                uint u9 <comment=ReadLine(this + 0x240)>;
+                uint u10 <comment=ReadLine(this + 0x240)>;
+                uint u11 <comment=ReadLine(this + 0x240)>;
+                uint u12 <comment=ReadLine(this + 0x240)>;
+                uint u13 <comment=ReadLine(this + 0x240)>;
+                uint u14 <comment=ReadLine(this + 0x240)>;
+                uint u15 <comment=ReadLine(this + 0x240)>;
+                uint u16 <comment=ReadLine(this + 0x240)>;
+                uint u17 <comment=ReadLine(this + 0x240)>;
+                uint u18 <comment=ReadLine(this + 0x240)>;
+                uint u19 <comment=ReadLine(this + 0x240)>;
+            } terraindata <name="Terrain Data", bgcolor = cBlue>;
+        }
+        FSeek(pos);
+        pos = FTell();
+      } sectiontable<name="Section Table", read=ReadSectionName>;
+    }
+  } sectiondata<name = "Section Data", fgcolor = cRed>;
+  FSeek(header.pointerTableOffset + 0x240);
+  struct PointerData {
+    local int j;
+    for( j = 0; j < header.numberOfPointers; j++ ) {
+        uint u <comment=ReadLine(this + 0x240)>;
+    }
+  } pointerdata<name = "Pointer Data", fgcolor = cLtBlue>;
+} file<name = "FE8Data.bin">;
+
+string ReadSectionName(SectionTable& st) {
+  string s = ReadLine(file.header.sectionNameTableOffset + st.sectionTableNameOffset);
+  return s;
+}
+
+//string ReadItemName(ItemTable& it) {
+//  string s = ReadLine(file.header.sectionNameTableOffset + it.itemNameOffset);
+//  return s;
+//}
+
+enum<ubyte> WeaponRank
+{
+  NONE,
+  E,
+  D,
+  C,
+  B,
+  A,
+  S,
+  UNKNOWN,
+};
+
+enum<ubyte> WeaponType
+{
+//  NONE,
+  SWORD,
+  LANCE,
+  AXE,
+  BOW,
+  FIRE,
+  THUNDER,
+  WIND,
+  LIGHT,
+  STAFF,
+  KNIFE,
+};
+
+enum<ubyte> WeaponEffect
+{
+//  NONE, 
+  STAT_BOOST, 
+  EFFECTIVENESS, 
+  UNBREAKABLE, 
+  BRAVE, 
+  REVERSE_TRIANGLE, 
+  EXTEND_RANGE, 
+  CRITICAL, 
+  MAGIC_DAMAGE, 
+  POISON, 
+  STEAL_HP, 
+  CRIT_IMMUNE, 
+  NO_CRIT,
+};

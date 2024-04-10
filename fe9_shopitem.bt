@@ -1,0 +1,100 @@
+//------------------------------------------------
+//--- 010 Editor v12.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+BigEndian();
+struct FILE {
+  struct HEADER {
+    // 0x0 ~ 0x3:  Length of the entire file
+    // 0x4 ~ 0x7:  The offset to the table of string pointers
+    // 0x8 ~ 0xB:  The number of pointers that exist in the table
+    // 0xC ~ 0xF:  The number of data sections that exist
+    // 0x10 ~ 0x1F: 00s as far as I can tell
+    uint lengthOfFile;
+    uint pointerTableOffset;
+    uint numberOfPointers;
+    uint numberOfSections;
+    byte Padding[0x10];
+    uint dateOffset;
+    uint authorOffset;
+    local uint sectionTableOffset = pointerTableOffset + (4 * numberOfPointers) + 0x20;
+    local uint sectionNameTableOffset = sectionTableOffset + (numberOfSections * 8);
+  } header<name = "Header", fgcolor = cLtBlue>;
+    Printf("sectionTableOffset = %u\n", header.sectionTableOffset);
+    Printf("sectionNameTableOffset = %u\n", header.sectionNameTableOffset);
+``
+  FSeek(header.sectionTableOffset);
+  struct SectionData {
+    local int i;
+    for( i = 0; i < header.numberOfSections; i++ ) {
+      struct SectionTable{
+        uint sectionTableOffset;
+        uint sectionTableNameOffset <comment=ReadLine(this + file.header.sectionNameTableOffset)>;
+        local uint pos = FTell();
+        FSeek(sectionTableOffset + 0x20);
+        struct ShopTable {
+          local string shopTableName = ReadLine(sectiontable.sectionTableNameOffset + file.header.sectionNameTableOffset);
+          local string shopTableType = SubStr(shopTableName, 0, 5);
+          switch( shopTableType ) {
+            case "FSHOP":
+              local int j;
+              local int k;
+              struct EasyForgeTable {
+                for( j = 0; j < 5; j++ ) {
+                  struct ForgeSection1 {
+                    for( k = 0; k < 9; k++ ) {
+                      struct ForgeItem1 {
+                        uint itemIDOffset <comment=ReadLine(this + 0x20)>;
+                        uint itemTypeIDOffset <comment=ReadLine(this + 0x20)>;                      
+                      } forgeitem1 <name = "Forge Item">;
+                    }
+                  } forgesection1 <name = "Forge Section">;
+                }
+              } easyforgetable <name = "Easy Forge Table", bgcolor = cLtBlue>;
+              //struct HardForgeTable {
+              //  for( j = 0; j < 5; j++ ) {
+              //    struct ForgeSection2 {
+              //      for( k = 0; k < 9; k++ ) {
+              //        struct ForgeItem2 {
+              //          uint itemIDOffset <comment=ReadLine(this + 0x20)>;
+              //          uint itemTypeIDOffset <comment=ReadLine(this + 0x20)>;                      
+              //        } forgeitem2 <name = "Forge Item">;
+              //      }
+              //    } forgesection2 <name = "Forge Section">;
+              //  }
+              //} hardforgetable <name = "Hard Forge Table", bgcolor = cLtBlue>;
+              break;
+            // case "ISHOP" or "WSHOP"
+            default:
+              local uint notNull = 1;
+              Printf("sectionTableType = %s\n", shopTableType);
+              while ( notNull == 1) {
+                if (ReadUInt() != 0) {
+                  uint shopItemIDOffset <comment=ReadLine(this + 0x20)>;
+                } else {
+                  notNull = 0;
+                  break;
+                }
+              }
+              break;
+          }
+        } shoptable<name="Shop Items">;
+        FSeek(pos);
+      } sectiontable<name="Section Table", read=ReadSectionName>;
+    }
+  } sectiondata<name = "Section Data", fgcolor = cRed>;
+} file<name = "shopitem_*.bin">;
+
+
+string ReadSectionName(SectionTable& st) {
+  string s = ReadLine(file.header.sectionNameTableOffset + st.sectionTableNameOffset);
+  return s;
+}
